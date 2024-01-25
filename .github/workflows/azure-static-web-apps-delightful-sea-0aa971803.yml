@@ -24,14 +24,14 @@ jobs:
         uses: Azure/static-web-apps-deploy@v1
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_DELIGHTFUL_SEA_0AA971803 }}
-          repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for Github integrations (i.e. PR comments)
+          repo_token: ${{ secrets.GITHUB_TOKEN }} # Utilisé pour les intégrations Github (commentaires PR, etc.)
           action: "upload"
-          ###### Repository/Build Configurations - These values can be configured to match your app requirements. ######
-          # For more information regarding Static Web App workflow configurations, please visit: https://aka.ms/swaworkflowconfig
-          app_location: "/frontend" # App source code path
-          api_location: "" # Api source code path - optional
-          output_location: "/frontend" # Built app content directory - optional
-          ###### End of Repository/Build Configurations ######
+          ###### Configurations du référentiel/construction - Ces valeurs peuvent être configurées pour correspondre aux besoins de votre application. ######
+          # Pour plus d'informations sur les configurations de flux de travail de Static Web App, veuillez visiter: https://aka.ms/swaworkflowconfig
+          app_location: "/frontend" # Chemin du code source de l'application
+          api_location: "/terraform" # Chemin du code source de l'API - facultatif
+          output_location: "/" # Répertoire du contenu de l'application construite - facultatif
+          ###### Fin des configurations du référentiel/construction ######
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
