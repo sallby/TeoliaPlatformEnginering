@@ -1,0 +1,62 @@
+<!-- run-terraform.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Run Terraform</title>
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        #message-container {
+            text-align: center;
+            padding: 20px;
+            background-color: #f0f0f0;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+
+<body>
+    <div id="message-container">
+        <p>Le déploiement est en cours d'initialisation et vous serez notifié lorsqu'il sera lancé.</p>
+    </div>
+    <script>
+        // Effectuer la requête POST vers l'endpoint FastAPI
+        fetch('http://localhost:5001/run-terraform', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                "json_file_path": "../terraform/terraform_api_data.json",
+                "terraform_commands": [
+                    { "command": "init" },
+                    { "command": "apply", "arguments": ["-auto-approve"] },
+                    { "command": "show" }
+                ]
+            }),
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                alert('Terraform commands executed. Check the console for details.');
+                // Rediriger vers http://localhost/ après avoir cliqué sur OK
+                window.location.href = 'http://localhost/';
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error executing Terraform commands. Check the console for details.');
+            });
+    </script>
+</body>
+
+</html>
