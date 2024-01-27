@@ -1,17 +1,3 @@
-/*const { app } = require('@azure/functions');
-
-app.http('serveur_js', {
-    methods: ['GET', 'POST'],
-    authLevel: 'anonymous',
-    handler: async (request, context) => {
-        context.log(`Http function processed request for url "${request.url}"`);
-
-        const name = request.query.get('name') || await request.text() || 'world';
-
-        return { body: `Hello, ${name}!` };
-    }
-});*/
-
 const express = require('express');
 const fetch = require('node-fetch');
 const cors = require('cors');
