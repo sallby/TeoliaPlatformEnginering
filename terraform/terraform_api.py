@@ -1,9 +1,12 @@
-import logging
-from fastapi import FastAPI, HTTPException, Depends, Request
-from fastapi.responses import JSONResponse
+# api.py
+
+from fastapi import FastAPI, HTTPException, Request
+from fastapi.responses import JSONResponse, HTMLResponse, FileResponse
 from fastapi.middleware.cors import CORSMiddleware
+from pathlib import Path
 import subprocess
 import json
+import logging  # Ajout de l'import pour le logging
 
 app = FastAPI()
 
@@ -18,6 +21,11 @@ app.add_middleware(
 
 # Configure logging
 logging.basicConfig(level=logging.DEBUG)
+
+@app.get("/", response_class=HTMLResponse)
+async def index():
+    html_path = Path(__file__).parent / "../" / "forms" / "run-terraform.html"
+    return FileResponse(str(html_path))
 
 @app.post('/run-terraform')
 async def run_terraform(request: Request):
@@ -65,4 +73,4 @@ async def run_terraform(request: Request):
 if __name__ == '__main__':
     import uvicorn
 
-    uvicorn.run(app, host='localhost', port=5002)
+    uvicorn.run(app, host='localhost', port=5001)
