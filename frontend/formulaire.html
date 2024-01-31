@@ -110,8 +110,8 @@
                         <img src="assets/img/why-us.png" class="img-fluid" alt="">
                     </div>
                     <div class="col-lg-6 pt-4 pt-lg-0 content" data-aos="fade-left" data-aos-delay="100">
-                        <form action="https://postmessage.azurewebsites.net/api/envoyerFormulaire" method="post"
-                            role="form" class="custom-form" id="monFormulaire">
+                        <form action="/api/envoyerFormulaire" method="post" role="form" class="custom-form"
+                            id="monFormulaire">
                             <div class="row">
                                 <div class="form-group col-md-6">
                                     <label for="name">Nom</label>
@@ -207,7 +207,7 @@
                                 // Ajoutez le log ici pour afficher le contenu envoyé
                                 console.log('Contenu envoyé:', JSON.stringify(formData));
 
-                                fetch("https://postmessage.azurewebsites.net/api/envoyerFormulaire", {
+                                fetch("/api/envoyerFormulaire", {
                                     method: "POST",
                                     headers: {
                                         "Content-Type": "application/json"
