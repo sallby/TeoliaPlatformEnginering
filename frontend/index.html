@@ -37,6 +37,38 @@
   * Author: BootstrapMade.com
   * License: https://bootstrapmade.com/license/
   ======================================================== -->
+  <script>
+    async function getUserInfo() {
+      try {
+        const response = await fetch('/.auth/me');
+
+        if (!response.ok) {
+          console.error('No profile could be found');
+          return undefined;
+        }
+        const payload = await response.json();
+        const { clientPrincipal } = payload;
+        return clientPrincipal;
+      } catch (error) {
+        console.error('No profile could be found');
+        return undefined;
+      }
+    }
+
+    getUserInfo().then(userInfo => {
+      if (userInfo) {
+        const linkLogin = document.getElementById('link_login');
+        linkLogin.querySelector('a').classList.toggle("d-none");
+        linkLogin.textContent = userInfo.userDetails
+        const linkLogout = document.getElementById('link_logout');
+        linkLogout.classList.toggle("d-none");
+
+        console.log(`Utilisateur ${userInfo.userDetails} (${userInfo.userId}) connecté.`);
+      } else {
+        console.error('No profile could be found');
+      }
+    });
+  </script>
 </head>
 
 <body>
@@ -56,7 +88,10 @@
           <li><a class="nav-link scrollto active" href="#hero">Accueil</a></li>
           <li><a class="nav-link scrollto" href="#about">Notre Vision</a></li>
           <li><a class="nav-link scrollto" href="#footer">Contact</a></li>
-          <li><a href="/.auth/login/github?post_login_redirect_uri=/formulaire.html">Login</a></li>
+          <li class="nav-link scrollto" id="link_login"><a
+              href="/.auth/login/aad?post_login_redirect_uri=/formulaire.html">Login</a></li>
+          <li class="nav-link d-none scrollto" id="link_logout"><a
+              href="/.auth/logout?post_logout_redirect_uri=/index.html">Log out</a></li>
         </ul>
         <i class="bi bi-list mobile-nav-toggle"></i>
       </nav><!-- .navbar -->

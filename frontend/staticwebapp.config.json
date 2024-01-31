@@ -1,20 +1,27 @@
 {
     "routes": [
         {
-            "route": "/formulaire.html/*",
+            "route": "/formulaire.html",
             "allowedRoles": [
                 "authenticated"
             ]
         },
         {
-            "route": "/.auth/login/aad",
+            "route": "/.auth/login/github",
             "statusCode": 404
+        },
+        {
+            "route": "/login",
+            "rewrite": "/.auth/login/aad"
         }
     ],
     "navigationFallback": {
         "rewrite": "/index.html",
         "exclude": [
-            "*.{css,scss,js,png,gif,ico,jpg,svg}"
+            "/assets/vendor/*",
+            "/assets/img/*.{png,jpg,gif}",
+            "/assets/css/*",
+            "/assets/js/*"
         ]
     }
 }

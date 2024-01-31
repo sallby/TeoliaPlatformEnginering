@@ -163,6 +163,10 @@ h6 {
 
 .navbar li {
   position: relative;
+  padding: 0px 0 0px 30px;
+  color: #FF7F00;
+  font-size: 15px;
+  font-weight: 500;
 }
 
 .navbar a,
