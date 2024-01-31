@@ -29,7 +29,7 @@ async function status(request, context) {
         }
     } catch (error) {
         console.error('Erreur lors de la requête:', error.message);
-        res.status(500).json({ error: 'Erreur lors de la requête' });
+        res.status(500).json({ error });
     }
     return {
         status: 200,
