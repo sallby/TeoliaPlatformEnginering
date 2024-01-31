@@ -33,28 +33,6 @@
     <!-- Inclure MSAL.js -->
     <script src="https://alcdn.msauth.net/browser/2.16.0/js/msal-browser.js"></script>
 
-    <script>
-        const msalConfig = {
-            auth: {
-                clientId: 'VOTRE_CLIENT_ID', // Remplacez par votre ID de client Azure AD
-                authority: 'https://login.microsoftonline.com/VOTRE_TENANT_ID', // Remplacez par votre ID de locataire Azure AD
-                redirectUri: 'http://localhost:5500', // Remplacez par votre URI de redirection
-            },
-            cache: {
-                cacheLocation: 'localStorage',
-                storeAuthStateInCookie: true,
-            },
-        };
-
-        const myMSALObj = new msal.PublicClientApplication(msalConfig);
-
-        // Vérifier si l'utilisateur est connecté
-        if (!myMSALObj.getAccount()) {
-            // Rediriger vers la page d'authentification
-            myMSALObj.loginRedirect();
-        }
-    </script>
-
 </head>
 
 <body>
