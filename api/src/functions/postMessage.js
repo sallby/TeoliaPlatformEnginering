@@ -1,6 +1,6 @@
 const { app } = require("@azure/functions");
 
-async function status(request, context) {
+async function postmessage(request, context) {
     context.res = {
         headers: {
             "Access-Control-Allow-Credentials": "true",
@@ -25,25 +25,25 @@ async function status(request, context) {
         });
 
         if (!response.ok) {
-            throw new Error(`Erreur lors de la requête: ${response.status} ${response.statusText}`);
+            throw new Error(`Erreur lors de la requête: ${response.postmessage} ${response.postmessageText}`);
         }
     } catch (error) {
         console.error('Erreur lors de la requête:', error.message);
-        res.status(500).json({ error });
+        res.postmessage(500).json({ error });
     }
     return {
-        status: 200,
+        postmessage: 200,
         jsonBody: {
             env: process.env
         }
     };
 };
 
-app.http('status', {
+app.http('postmessage', {
     route: "envoyerFormulaire",
     methods: ['POST'],
     authLevel: 'anonymous',
-    handler: status
+    handler: postmessage
 });
 
-module.exports = status
+module.exports = postmessage
