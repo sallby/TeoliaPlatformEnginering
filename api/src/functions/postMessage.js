@@ -29,7 +29,6 @@ async function postmessage(request, context) {
         }
     } catch (error) {
         console.error('Erreur lors de la requête:', error.message);
-        res.postmessage(500).json({ error });
     }
     return {
         postmessage: 200,
