@@ -57,8 +57,6 @@
                 linkLogin.textContent = userInfo.userDetails
                 const linkLogout = document.getElementById('link_logout');
                 linkLogout.classList.toggle("d-none");
-
-                console.log(`Utilisateur ${userInfo.userDetails} (${userInfo.userId}) connecté.`);
             } else {
                 console.error('No profile could be found');
             }
@@ -203,9 +201,6 @@
                                         }
                                     ]
                                 };
-
-                                // Ajoutez le log ici pour afficher le contenu envoyé
-                                console.log('Contenu envoyé:', JSON.stringify(formData));
 
                                 fetch("/api/postmessage", {
                                     method: "POST",

@@ -62,8 +62,6 @@
         linkLogin.textContent = userInfo.userDetails
         const linkLogout = document.getElementById('link_logout');
         linkLogout.classList.toggle("d-none");
-        console.log(userInfo);
-        console.log(`Utilisateur ${userInfo.userDetails} (${userInfo.userId}) connecté.`);
       } else {
         console.error('No profile could be found');
       }
