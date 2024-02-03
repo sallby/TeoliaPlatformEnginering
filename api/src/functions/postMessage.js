@@ -1,4 +1,5 @@
 const { app } = require("@azure/functions");
+const fetch = require('node-fetch');
 
 async function postmessage(request, context) {
     context.res = {
@@ -25,7 +26,7 @@ async function postmessage(request, context) {
         });
 
         if (!response.ok) {
-            throw new Error(`Erreur lors de la requête: ${response.postmessage} ${response.postmessageText}`);
+            throw new Error(`Erreur lors de la requête: ${response.status} ${response.statusText}`);
         }
     } catch (error) {
         console.error('Erreur lors de la requête:', error.message);
@@ -44,4 +45,4 @@ app.http('postmessage', {
     handler: postmessage
 });
 
-module.exports = postmessage
+module.exports = postmessage;
