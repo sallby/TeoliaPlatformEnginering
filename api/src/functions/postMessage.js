@@ -40,7 +40,6 @@ async function postmessage(request, context) {
 };
 
 app.http('postmessage', {
-    route: "envoyerFormulaire",
     methods: ['POST'],
     authLevel: 'anonymous',
     handler: postmessage
