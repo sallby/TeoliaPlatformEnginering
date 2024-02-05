@@ -20,6 +20,9 @@ jobs:
       - name: Change Directory to Terraform
         run: cd terraform
 
+      - name: Change Directory to Terraform
+        run: cd terraform
+
       - name: List files in Terraform directory
         run: ls -la
         
