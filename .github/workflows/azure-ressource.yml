@@ -20,9 +20,6 @@ jobs:
       - name: Change Directory to Terraform
         run: cd terraform
 
-      - name: Change Directory to Terraform
-        run: cd terraform
-
       - name: List files in Terraform directory
         run: ls -la
         
@@ -30,7 +27,9 @@ jobs:
         uses: hashicorp/setup-terraform@v2
 
       - name: Terraform Init
-        run: terraform init
+        run: |
+          terraform init
+          ls -la
 
       - name: Terraform Validate
         run: terraform validate
