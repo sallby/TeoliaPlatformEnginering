@@ -31,26 +31,17 @@
     </div>
     <script>
         // Effectuer la requête POST vers l'endpoint FastAPI
-        fetch('http://localhost:5001/run-terraform', {
+        fetch('/api/deploy_ressource', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                "json_file_path": "../terraform/terraform_api_data.json",
-                "terraform_commands": [
-                    { "command": "init" },
-                    { "command": "apply", "arguments": ["-auto-approve"] },
-                    { "command": "show" }
-                ]
-            }),
+            }
         })
             .then(response => response.json())
             .then(data => {
                 console.log(data);
                 alert('Terraform commands executed. Check the console for details.');
-                // Rediriger vers http://localhost/ après avoir cliqué sur OK
-                window.location.href = 'http://localhost/';
+                window.location.href = 'index.html';
             })
             .catch(error => {
                 console.error('Error:', error);
