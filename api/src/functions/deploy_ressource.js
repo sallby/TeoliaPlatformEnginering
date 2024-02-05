@@ -4,7 +4,7 @@ const githubToken = process.env.GITHUB_TOKEN;
 
 const owner = 'sallby';
 const repo = 'TeoliaPlatformEnginering';
-const job_id = '21227901495';
+const workflow_id = '84904292';
 
 async function deploy_ressource(context, req) {
   context.res = {
@@ -20,17 +20,15 @@ async function deploy_ressource(context, req) {
   };
 
   try {
-    const response = await fetch(`https://api.github.com/repos/${owner}/${repo}/actions/jobs/${job_id}/rerun`, {
+    const response = await fetch(`https://api.github.com/repos/${owner}/${repo}/actions/workflows/${workflow_id}/dispatches`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${githubToken}`,
-        'X-GitHub-Api-Version': '2022-11-28',
+        'Authorization': `token ${githubToken}`,
+        'Accept': 'application/vnd.github.v3+json',
       },
       body: JSON.stringify({
-        owner,
-        repo,
-        job_id,
+        ref: 'main',
       }),
     });
 
