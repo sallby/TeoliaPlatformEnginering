@@ -55,7 +55,7 @@ async function deploy_ressource(context, req) {
 
 app.http('deploy_ressource', {
   methods: ['POST'],
-  authLevel: 'function',
+  authLevel: 'anonymous',
   handler: deploy_ressource
 });
 
