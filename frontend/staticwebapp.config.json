@@ -17,7 +17,7 @@
             "allowedRoles": [
                 "authenticated"
             ],
-            "rewrite": "/.auth/login/aad"
+            "rewrite": "/index.html"
         },
         {
             "route": "/.auth/login/github",
