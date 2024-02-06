@@ -1,7 +1,6 @@
 const { app } = require("@azure/functions");
 const fetch = require('node-fetch');
-const githubToken = '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';
-//const githubToken = process.env.GITHUB_TOKEN;
+const githubToken = process.env.GITHUB_TOKEN;
 
 const owner = 'sallby';
 const repo = 'TeoliaPlatformEnginering';
