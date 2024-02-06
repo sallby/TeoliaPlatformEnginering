@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Run Mail</title>
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        #message-container {
+            text-align: center;
+            padding: 20px;
+            background-color: #f0f0f0;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+
+<body>
+    <div id="message-container">
+        <p>L'envoi du mail est en cours, vous serez notifié une fois que le processus sera terminé.</p>
+    </div>
+    <script>
+        // Effectuer la requête POST vers l'endpoint de l'API Azure Function
+        const url = `/api/sendmail?prenom=${getUrlParameter('prenom')}&email=${getUrlParameter('email')}`;
+        const body = {
+            prenom: getUrlParameter('prenom'),
+            email: getUrlParameter('email'),
+            type: getUrlParameter('type')
+        };
+        console.log("Requête POST envoyée à l'API de la fonction Azure:", { url, body });
+
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(body)
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                alert('Le mail a été envoyé avec succès.');
+                window.location.href = 'index.html';
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Une erreur s\'est produite lors de l\'envoi du mail.');
+            });
+
+        // Fonction pour extraire les paramètres d'une URL
+        function getUrlParameter(name) {
+            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+            var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+            var results = regex.exec(location.search);
+            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        };
+    </script>
+</body>
+
+</html>
