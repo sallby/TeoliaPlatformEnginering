@@ -6,9 +6,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Run Terraform</title>
-    <!-- Template Main CSS File -->
-    <link href="assets/css/style.css" rel="stylesheet">
-
     <style>
         body {
             display: flex;
@@ -26,65 +23,9 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
     </style>
-    <script>
-        async function getUserInfo() {
-            try {
-                const response = await fetch('/.auth/me');
-
-                if (!response.ok) {
-                    console.error('No profile could be found');
-                    return undefined;
-                }
-                const payload = await response.json();
-                const { clientPrincipal } = payload;
-                return clientPrincipal;
-            } catch (error) {
-                console.error('No profile could be found');
-                return undefined;
-            }
-        }
-
-        getUserInfo().then(userInfo => {
-            if (userInfo) {
-                const linkLogin = document.getElementById('link_login');
-                linkLogin.querySelector('a').classList.toggle("d-none");
-                linkLogin.textContent = userInfo.userDetails
-                const linkLogout = document.getElementById('link_logout');
-                linkLogout.classList.toggle("d-none");
-            } else {
-                console.error('No profile could be found');
-            }
-        });
-    </script>
 </head>
 
 <body>
-    <header id="header" class="fixed-top header-inner-pages">
-        <div class="container d-flex align-items-center">
-
-            <h1 class="logo me-auto">
-                <a href="index.html">
-                    <img class="teolia-logo"
-                        src="https://static.wixstatic.com/media/d81a73_455a892fc9134f27a880bdd048714042~mv2.png/v1/fill/w_243,h_90,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/LogoTeolia2021%20(1).png"
-                        alt="Logo de Teolia">
-                </a>
-            </h1>
-
-            <nav id="navbar" class="navbar">
-                <ul>
-                    <li><a class="nav-link scrollto active" href="#hero">Accueil</a></li>
-                    <li><a class="nav-link scrollto" href="#about">Notre Vision</a></li>
-                    <li><a class="nav-link scrollto" href="#footer">Contact</a></li>
-                    <li class="nav-link scrollto" id="link_login"><a
-                            href="/.auth/login/aad?post_login_redirect_uri=/run-terraform.html">Login</a></li>
-                    <li class="nav-link d-none scrollto" id="link_logout"><a
-                            href="/.auth/logout?post_logout_redirect_uri=/index.html">Log out</a></li>
-                </ul>
-                <i class="bi bi-list mobile-nav-toggle"></i>
-            </nav><!-- .navbar -->
-
-        </div>
-    </header><!-- End Header -->
     <div id="message-container">
         <p>Le déploiement est en cours d'initialisation et vous serez notifié lorsqu'il sera lancé.</p>
     </div>
@@ -107,8 +48,6 @@
                 alert('Error executing Terraform commands. Check the console for details.');
             });
     </script>
-    <!-- Template Main JS File -->
-    <script src="assets/js/main.js"></script>
 </body>
 
 </html>
