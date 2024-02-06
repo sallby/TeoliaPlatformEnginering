@@ -40,12 +40,13 @@
             .then(response => response.json())
             .then(data => {
                 console.log(data);
-                alert('Terraform commands executed. Check the console for details.');
+                alert('Le déploiement est en cours.');
                 window.location.href = 'index.html';
             })
             .catch(error => {
                 console.error('Error:', error);
-                alert('Error executing Terraform commands. Check the console for details.');
+                alert('Le pepiline gitHub actions n\'est pas lancher, vous devez vous authentifier et recliquer sur le bouton accepter.');
+                window.location.href = 'index.html';
             });
     </script>
 </body>
