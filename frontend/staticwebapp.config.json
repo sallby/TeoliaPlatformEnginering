@@ -16,7 +16,8 @@
             "route": "/run-formulaire.html",
             "allowedRoles": [
                 "authenticated"
-            ]
+            ],
+            "rewrite": "/.auth/login/aad"
         },
         {
             "route": "/.auth/login/github",
