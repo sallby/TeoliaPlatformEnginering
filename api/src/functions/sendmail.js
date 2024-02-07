@@ -7,43 +7,32 @@ async function sendmail(context, req) {
         headers: {
             "Access-Control-Allow-Credentials": "true",
             "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Methods": "POST, OPTIONS",
-            "Access-Control-Allow-Headers": "Content-Type, Set-Cookie",
+            "Access-Control-Allow-Methods": "POST, OPTIONS, GET",
+            "Access-Control-Allow-Headers": "Content-Type, Authorization, Set-Cookie",
             "Access-Control-Max-Age": "86400",
             "Vary": "Accept-Encoding, Origin",
             "Content-Type": "application/json"
         },
     };
 
-    // **Vérification et extraction des paramètres de l'URL**
-    if (req.query && req.query.prenom) {
-        const { prenom, email, type, localisation, nomRessource } = req.query;
+    // Vérification et extraction des paramètres de l'URL
+    if (req.query && req.query.prenom && req.query.email) { // Ajout de la vérification des autres paramètres si nécessaire
+        const { prenom, email } = req.query;
+        // Vérification des paramètres de la requête
+        console.log("Paramètres de la requête:", req.query);
+        console.log("Paramètres extraits de l'URL:", { prenom, email });
 
-        // Vérification des paramètres extraits
-        console.log("Paramètres extraits de l'URL:", { prenom, email, type, localisation, nomRessource });
-
-        // ... suite du code ...
     } else {
-        // Gérer le cas où 'prenom' est absent
-        console.error("Erreur : Le paramètre 'prenom' est manquant dans la requête.");
+        // Gérer le cas où 'prenom' ou 'email' sont absents
+        console.error("Erreur : Les paramètres 'prenom' et 'email' sont obligatoires dans la requête.");
         context.res = {
             status: 400,
-            body: "Le paramètre 'prenom' est obligatoire."
+            body: "Les paramètres 'prenom' et 'email' sont obligatoires."
         };
         return context.res;
     }
 
-    // Extraction des paramètres de l'URL
-    const { prenom, email, type, localisation, nomRessource } = req.query;
-
-    // Vérification des paramètres de la requête
-    console.log("Paramètres de la requête:", req.query);
-
-    // Vérification des paramètres extraits
-    console.log("Paramètres extraits de l'URL:", { prenom, email, type, localisation, nomRessource });
-
-    // Construction du contenu du message en utilisant les paramètres de l'URL
-    const messageContent = `Bonjour ${prenom || ''}, Votre demande de type ${type || ''} pour ${nomRessource || ''} a été refusée. Veuillez nous contacter pour plus d'informations.`;
+    const messageContent = `Bonjour ${prenom || ''}, Votre demande a été refusée. Veuillez nous contacter pour plus d'informations.`;
 
     try {
 
@@ -59,7 +48,7 @@ async function sendmail(context, req) {
             },
             body: JSON.stringify({
                 message: {
-                    subject: 'Demande  demande refusée',
+                    subject: 'Demande refusée',
                     body: {
                         contentType: 'Text',
                         content: messageContent

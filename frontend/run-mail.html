@@ -30,11 +30,12 @@
     </div>
     <script>
         // Effectuer la requête POST vers l'endpoint de l'API Azure Function
-        const url = `/api/sendmail?prenom=${getUrlParameter('prenom')}&email=${getUrlParameter('email')}`;
+        const prenom = getUrlParameter('prenom');
+        const email = getUrlParameter('email');
+        const url = `/api/sendmail?prenom=${encodeURIComponent(prenom)}&email=${encodeURIComponent(email)}`;
         const body = {
-            prenom: getUrlParameter('prenom'),
-            email: getUrlParameter('email'),
-            type: getUrlParameter('type')
+            prenom: prenom,
+            email: email
         };
         console.log("Requête POST envoyée à l'API de la fonction Azure:", { url, body });
 
@@ -45,11 +46,16 @@
             },
             body: JSON.stringify(body)
         })
-            .then(response => response.json())
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                }
+                throw new Error('Erreur lors de la requête.');
+            })
             .then(data => {
                 console.log(data);
                 alert('Le mail a été envoyé avec succès.');
-                window.location.href = 'index.html';
+                window.location.href = 'index.html'; // Redirigez vers la page appropriée après l'envoi du mail
             })
             .catch(error => {
                 console.error('Error:', error);
