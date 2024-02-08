@@ -1,8 +1,14 @@
 const { app } = require("@azure/functions");
 const fetch = require('node-fetch');
-const access_token = process.env.ACCESS_TOKEN;
+// ID client et secret client du service principal
+const clientId = process.env.CLIENT_ID;
+const clientSecret = process.env.CLIENT_SECRET;
+const tenantId = process.env.TENANT_ID;
 
-async function sendmail(context, req) {
+const token_access = process.env.ACCESS;
+
+
+async function sendmail(req, context) {
     context.res = {
         headers: {
             "Access-Control-Allow-Credentials": "true",
@@ -14,37 +20,23 @@ async function sendmail(context, req) {
             "Content-Type": "application/json"
         },
     };
+    const data = await req.json();
 
-    // Vérification et extraction des paramètres de l'URL
-    if (req.query && req.query.prenom && req.query.email) { // Ajout de la vérification des autres paramètres si nécessaire
-        const { prenom, email } = req.query;
-        // Vérification des paramètres de la requête
-        console.log("Paramètres de la requête:", req.query);
-        console.log("Paramètres extraits de l'URL:", { prenom, email });
-
-    } else {
-        // Gérer le cas où 'prenom' ou 'email' sont absents
-        console.error("Erreur : Les paramètres 'prenom' et 'email' sont obligatoires dans la requête.");
-        context.res = {
-            status: 400,
-            body: "Les paramètres 'prenom' et 'email' sont obligatoires."
-        };
-        return context.res;
-    }
-
-    const messageContent = `Bonjour ${prenom || ''}, Votre demande a été refusée. Veuillez nous contacter pour plus d'informations.`;
-
+    const messageContent = `Bonjour ${data.prenom || ''}, Votre demande a été refusée. Veuillez nous contacter pour plus d'informations.`;
     try {
 
-        if (!access_token) {
-            throw new Error("Access token not available.");
-        }
+        // Obtenez un jeton d'accès à partir de l'endpoint d'autorisation d'Azure AD
+        const tokenResponse = await getTokenFromAAD();
 
+        // Utilisez le jeton d'accès pour accéder à l'API Microsoft Graph
+        const accessToken = tokenResponse.access_token;
+
+        // Envoyez une requête à l'API Microsoft Graph en utilisant le jeton d'accès
         const response = await fetch(`https://graph.microsoft.com/v1.0/me/sendMail`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `${access_token}`,
+                'Authorization': `Bearer ${token_access}`,
             },
             body: JSON.stringify({
                 message: {
@@ -56,7 +48,7 @@ async function sendmail(context, req) {
                     toRecipients: [
                         {
                             emailAddress: {
-                                address: email
+                                address: data.email
                             }
                         }
                     ]
@@ -76,11 +68,27 @@ async function sendmail(context, req) {
         console.error('Erreur lors de la requête:', error.message);
         context.res = {
             status: 500,
-            body: 'Une erreur s\'est produite lors de l\'envoi du mail.',
+            body: 'Une erreur s\'est produit.',
         };
     }
 
-    return context.res;
+}
+
+// Fonction pour obtenir un jeton d'accès à partir de l'endpoint d'autorisation d'Azure AD
+async function getTokenFromAAD() {
+    const response = await fetch(`https://login.microsoftonline.com/c6cc03ce-c0c9-4397-a535-2a67c8d16335/oauth2/v2.0/token`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams({
+            grant_type: 'client_credentials',
+            client_id: clientId,
+            client_secret: clientSecret,
+            scope: 'https://graph.microsoft.com/.default',
+        }),
+    });
+    return await response.json();
 }
 
 app.http('sendmail', {

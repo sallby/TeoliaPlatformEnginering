@@ -37,8 +37,6 @@
             prenom: prenom,
             email: email
         };
-        console.log("Requête POST envoyée à l'API de la fonction Azure:", { url, body });
-
         fetch(url, {
             method: 'POST',
             headers: {
@@ -46,20 +44,15 @@
             },
             body: JSON.stringify(body)
         })
-            .then(response => {
-                if (response.ok) {
-                    return response.json();
-                }
-                throw new Error('Erreur lors de la requête.');
-            })
             .then(data => {
-                console.log(data);
+                console.log("Voir la reponse", data);
                 alert('Le mail a été envoyé avec succès.');
-                window.location.href = 'index.html'; // Redirigez vers la page appropriée après l'envoi du mail
+                window.location.href = 'index.html';
             })
             .catch(error => {
                 console.error('Error:', error);
                 alert('Une erreur s\'est produite lors de l\'envoi du mail.');
+                window.location.href = 'index.html';
             });
 
         // Fonction pour extraire les paramètres d'une URL
