@@ -1,9 +1,8 @@
 const { app } = require("@azure/functions");
 const fetch = require('node-fetch');
 // ID client et secret client du service principal
-const clientId = process.env.CLIENT_ID;
-const clientSecret = process.env.CLIENT_SECRET;
-const tenantId = process.env.TENANT_ID;
+const clientId = process.env.AZURE_CLIENT_ID;
+const clientSecret = process.env.AZURE_CLIENT_SECRET;
 
 const token_access = process.env.ACCESS;
 

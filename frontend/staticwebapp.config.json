@@ -34,6 +34,21 @@
             "redirect": "/.auth/login/aad"
         }
     },
+    "auth": {
+        "identityProviders": {
+            "azureActiveDirectory": {
+                "userDetailsClaim": "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name",
+                "registration": {
+                    "openIdIssuer": "https://login.microsoftonline.com/c6cc03ce-c0c9-4397-a535-2a67c8d16335",
+                    "clientIdSettingName": "AZURE_CLIENT_ID",
+                    "clientSecretSettingName": "AZURE_CLIENT_SECRET"
+                }
+            }
+        }
+    },
+    "globalHeaders": {
+        "Cache-Control": "no-cache"
+    },
     "navigationFallback": {
         "rewrite": "/index.html",
         "exclude": [
