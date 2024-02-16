@@ -1,7 +1,16 @@
 name: Destroy resources Azure
 
 on:
-  workflow_dispatch
+  workflow_dispatch:
+    inputs:
+      location:
+        description: 'Location for the Azure resources'
+        required: true
+        default: 'francecentral' # Vous pouvez spécifier une valeur par défaut ici
+      resource_group_name:
+        description: 'Name for the Azure resource group'
+        required: true
+        default: 'rg-sallbytest' # Vous pouvez spécifier une valeur par défaut ici
 
 jobs:
   terraform:
@@ -24,16 +33,9 @@ jobs:
         working-directory: ./terraform 
         run: terraform init -reconfigure
 
-      - name: Try to unlock Terraform state
-        working-directory: ./terraform
-        run: |
-          if terraform force-unlock -force; then
-            echo "Terraform state unlocked successfully."
-          else
-            echo "Failed to unlock Terraform state. Exiting."
-            exit 1
-          fi
-
       - name: Destroy if approved
         working-directory: ./terraform
-        run: terraform destroy -auto-approve
+        run: |
+          terraform destroy -auto-approve \
+            -var="location=${{ github.event.inputs.location }}" \
+            -var="nomRessource=${{ github.event.inputs.resource_group_name }}"
