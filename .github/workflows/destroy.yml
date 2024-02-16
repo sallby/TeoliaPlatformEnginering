@@ -24,6 +24,16 @@ jobs:
         working-directory: ./terraform 
         run: terraform init -reconfigure
 
+      - name: Try to unlock Terraform state
+        working-directory: ./terraform
+        run: |
+          if terraform force-unlock -force; then
+            echo "Terraform state unlocked successfully."
+          else
+            echo "Failed to unlock Terraform state. Exiting."
+            exit 1
+          fi
+
       - name: Destroy if approved
         working-directory: ./terraform
         run: terraform destroy -auto-approve
