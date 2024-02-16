@@ -108,8 +108,8 @@
                         <img src="assets/img/why-us.png" class="img-fluid" alt="">
                     </div>
                     <div class="col-lg-6 pt-4 pt-lg-0 content" data-aos="fade-left" data-aos-delay="100">
-                        <form action="/api/postmessage" method="post" role="form" class="custom-form"
-                            id="monFormulaire">
+                        <form action="/api/postmessage" method="post" role="form" class="custom-form" id="monFormulaire"
+                            onsubmit="return validateForm()">
                             <div class="row">
                                 <div class="form-group col-md-6">
                                     <label for="name">Nom</label>
@@ -139,17 +139,48 @@
                                     <select id="localisation" name="localisation" class="form-control">
                                         <option value="westeurope">West Europe</option>
                                         <option value="northeurope">North Europe</option>
+                                        <option value="francecentral">France Central</option>
                                     </select>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label for="nomRessource">Nom de la Ressource Group</label>
-                                <input type="text" class="form-control" id="nomRessource" name="nomRessource" required>
+                                <input type="text" class="form-control" id="nomRessource" name="nomRessource" required
+                                    oninput="validateInput()">
+                                <span id="errorMessage" style="color: red;"></span>
                             </div>
-                            <div class="text-center"><button type="submit">Envoyer</button></div>
-                        </form>
 
+                            <div class="text-center">
+                                <button type="submit">Envoyer</button>
+                            </div>
+                        </form>
+                        <script>
+                            function validateInput() {
+                                var input = document.getElementById('nomRessource');
+                                var errorMessage = document.getElementById('errorMessage');
+
+                                var value = input.value.trim();
+
+                                if (value.length > 16) {
+                                    errorMessage.textContent = "La longueur ne doit pas dépasser 16 caractères.";
+                                    return false;
+                                }
+                                if (!value.startsWith('rg-')) {
+                                    errorMessage.textContent = "Le nom doit commencer par 'rg-'et ne doit pas contenir d'espaces.";
+                                    return false;
+                                }
+                                errorMessage.textContent = "";
+                                return true;
+                            }
+
+                            function validateForm() {
+                                if (!validateInput()) {
+                                    return false;
+                                }
+                                return true;
+                            }
+                        </script>
 
                         <script>
                             document.getElementById("monFormulaire").addEventListener("submit", function (event) {

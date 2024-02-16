@@ -16,6 +16,7 @@ async function postmessage(request, context) {
     const webhookUrl = 'https://teolia.webhook.office.com/webhookb2/b0f16287-3172-4f73-81db-2856ea4b6839@c6cc03ce-c0c9-4397-a535-2a67c8d16335/IncomingWebhook/a01ca56f3d0d4f109930fa88c3824b49/e42641d0-da97-40e6-a3e1-4bff608bac99'; // URL de la webhook
     context.log(`Http function processed request for url "${request.url}"`);
     const formData = await request.json();
+    console.log(formData);
     try {
         const response = await fetch(webhookUrl, {
             method: 'POST',

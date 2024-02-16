@@ -6,7 +6,7 @@ const owner = 'sallby';
 const repo = 'TeoliaPlatformEnginering';
 const workflow_id = '84904292';
 
-async function deploy_ressource(context, req) {
+async function deploy_ressource(req, context) {
   context.res = {
     headers: {
       "Access-Control-Allow-Credentials": "true",
@@ -19,6 +19,7 @@ async function deploy_ressource(context, req) {
     },
   };
   const data = await req.json();
+  console.log('data', data);
 
   try {
     const response = await fetch(`https://api.github.com/repos/${owner}/${repo}/actions/workflows/${workflow_id}/dispatches`, {
