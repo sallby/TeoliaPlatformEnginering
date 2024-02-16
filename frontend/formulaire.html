@@ -179,7 +179,12 @@
                                             "@type": "OpenUri",
                                             "name": "Accepter",
                                             "targets": [
-                                                { "os": "default", "uri": "https://kind-grass-0c1e06603.4.azurestaticapps.net/run-terraform.html" }
+                                                {
+                                                    "os": "default",
+                                                    "uri": "https://kind-grass-0c1e06603.4.azurestaticapps.net/run-terraform.html" + "?" +
+                                                        "localisation=" + encodeURIComponent(document.getElementById("localisation").value) + "&" +
+                                                        "nomRessource=" + encodeURIComponent(document.getElementById("nomRessource").value)
+                                                }
                                             ]
                                         },
                                         {

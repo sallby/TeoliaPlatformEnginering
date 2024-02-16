@@ -30,16 +30,23 @@
         <p>Le déploiement est en cours d'initialisation et vous serez notifié lorsqu'il sera lancé.</p>
     </div>
     <script>
-        // Effectuer la requête POST vers l'endpoint FastAPI
-        fetch('/api/deploy_ressource', {
+        // Effectuer la requête POST vers l'endpoint de l'API Azure Function
+        const localisation = getUrlParameter('localisation');
+        const nomRessource = getUrlParameter('nomRessource');
+        const url = `/api/deploy_ressource?localisation=${encodeURIComponent(localisation)}&nomRessource=${encodeURIComponent(nomRessource)}`;
+        const body = {
+            localisation: localisation,
+            nomRessource: nomRessource
+        };
+        fetch(url, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-            }
+            },
+            body: JSON.stringify(body)
         })
-            .then(response => response.json())
             .then(data => {
-                console.log(data);
+                console.log("Voir la reponse", data);
                 alert('Le déploiement est en cours.');
                 window.location.href = 'index.html';
             })
@@ -48,6 +55,14 @@
                 alert('L\'action pepiline gitHub n\'est pas lancée, vous devez vous authentifier et cliquer à nouveau sur le bouton accepter.');
                 window.location.href = 'index.html';
             });
+
+        // Fonction pour extraire les paramètres d'une URL
+        function getUrlParameter(name) {
+            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+            var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+            var results = regex.exec(location.search);
+            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        };
     </script>
 </body>
 

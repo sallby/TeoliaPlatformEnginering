@@ -1,7 +1,14 @@
 name: Apply resources Azure
 
 on:
-  workflow_dispatch
+  workflow_dispatch:
+    inputs:
+      localisation:
+        description: 'Localisation de la ressource'
+        required: true
+      nomRessource:
+        description: 'Nom de la ressource'
+        required: true
 
 jobs:
   terraform:
@@ -30,7 +37,10 @@ jobs:
 
       - name: Terraform Plan
         working-directory: ./terraform
-        run: terraform plan -out=tfplan
+        run: |
+          terraform plan -out=tfplan \
+            -var="localisation=${{ github.event.inputs.localisation }}" \
+            -var="nomRessource=${{ github.event.inputs.nomRessource }}"
 
       - name: Deploy if approved
         working-directory: ./terraform

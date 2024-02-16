@@ -18,6 +18,7 @@ async function deploy_ressource(context, req) {
       "Content-Type": "application/json"
     },
   };
+  const data = await req.json();
 
   try {
     const response = await fetch(`https://api.github.com/repos/${owner}/${repo}/actions/workflows/${workflow_id}/dispatches`, {
@@ -29,6 +30,10 @@ async function deploy_ressource(context, req) {
       },
       body: JSON.stringify({
         ref: 'main',
+        "inputs": {
+          "localisation": data.localisation,
+          "nomRessource": data.nomRessource
+        }
       }),
     });
 
