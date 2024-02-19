@@ -62,7 +62,17 @@
             }
         });
     </script>
+    <script>
+        // Fonction pour mettre à jour le champ nom avec uniquement le nom
+        function updateNameFromPrenom() {
+            var fullName = document.getElementById("prenom").value; // Récupérer la valeur complète du champ prénom (prénom + nom)
+            var lastName = fullName.split(' ')[0]; // Extraire le nom à partir de la valeur complète (supposant que le nom est la première partie)
+            document.getElementById("name").value = lastName; // Mettre à jour la valeur du champ nom avec le nom extrait
+        }
 
+        // Appeler la fonction pour mettre à jour le champ nom lorsqu'il y a un changement dans le champ prénom
+        document.getElementById("prenom").addEventListener("input", updateNameFromPrenom);
+    </script>
 </head>
 
 <body>
@@ -108,12 +118,13 @@
                         <img src="assets/img/why-us.png" class="img-fluid" alt="">
                     </div>
                     <div class="col-lg-6 pt-4 pt-lg-0 content" data-aos="fade-left" data-aos-delay="100">
-                        <form action="/api/postmessage" method="post" role="form" class="custom-form" id="monFormulaire"
-                            onsubmit="return validateForm()">
+                        <form action="/api/postmessage" method="post" role="form" class="custom-form"
+                            id="monFormulaire">
                             <div class="row">
                                 <div class="form-group col-md-6">
                                     <label for="name">Nom</label>
-                                    <input type="text" name="name" class="form-control" id="name" required>
+                                    <input type="text" class="form-control" name="name" id="name" required
+                                        oninput="updateResourceGroupName()">
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="prenom">Prénom</label>
@@ -129,9 +140,9 @@
                                 <div class="form-group col-md-6">
                                     <label for="name">Type de demande</label>
                                     <select id="type" name="type" class="form-control"
-                                        title="Sélectionnez le type de demande">
+                                        title="Sélectionnez le type de demande" onchange="updateResourceGroupName()">
                                         <option value="certification">Certification</option>
-                                        <option value="developpeur">Développeur</option>
+                                        <option value="application">Application</option>
                                     </select>
                                 </div>
                                 <div class="form-group col-md-6">
@@ -146,40 +157,27 @@
 
                             <div class="form-group">
                                 <label for="nomRessource">Nom de la Ressource Group</label>
-                                <input type="text" class="form-control" id="nomRessource" name="nomRessource" required
-                                    oninput="validateInput()">
-                                <span id="errorMessage" style="color: red;"></span>
+                                <input type="text" class="form-control" id="nomRessource" name="nomRessource" readonly
+                                    required>
                             </div>
 
                             <div class="text-center">
                                 <button type="submit">Envoyer</button>
                             </div>
                         </form>
+
                         <script>
-                            function validateInput() {
-                                var input = document.getElementById('nomRessource');
-                                var errorMessage = document.getElementById('errorMessage');
-
-                                var value = input.value.trim();
-
-                                if (value.length > 16) {
-                                    errorMessage.textContent = "La longueur ne doit pas dépasser 16 caractères.";
-                                    return false;
+                            var lastName = "";
+                            function updateResourceGroupName() {
+                                var type = document.getElementById('type').value;
+                                var name = document.getElementById('name').value.replace(/\s/g, '');
+                                var nomRessource = document.getElementById('nomRessource');
+                                if (name !== lastName) {
+                                    nomRessource.value = 're-' + type + '-' + name;
+                                    lastName = name;
                                 }
-                                if (!value.startsWith('rg-')) {
-                                    errorMessage.textContent = "Le nom doit commencer par 'rg-'et ne doit pas contenir d'espaces.";
-                                    return false;
-                                }
-                                errorMessage.textContent = "";
-                                return true;
                             }
-
-                            function validateForm() {
-                                if (!validateInput()) {
-                                    return false;
-                                }
-                                return true;
-                            }
+                            document.getElementById('prenom').addEventListener('input', updateResourceGroupName);
                         </script>
 
                         <script>

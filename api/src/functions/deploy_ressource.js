@@ -19,8 +19,6 @@ async function deploy_ressource(req, context) {
     },
   };
   const data = await req.json();
-  console.log('data', data);
-
   try {
     const response = await fetch(`https://api.github.com/repos/${owner}/${repo}/actions/workflows/${workflow_id}/dispatches`, {
       method: 'POST',
