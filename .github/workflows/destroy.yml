@@ -3,14 +3,12 @@ name: Destroy resources Azure
 on:
   workflow_dispatch:
     inputs:
-      location:
+      localisation:
         description: 'Location for the Azure resources'
         required: true
-        default: 'francecentral' # Vous pouvez spécifier une valeur par défaut ici
       resource_group_name:
         description: 'Name for the Azure resource group'
         required: true
-        default: 'rg-sallbytest' # Vous pouvez spécifier une valeur par défaut ici
 
 jobs:
   terraform:
@@ -37,5 +35,5 @@ jobs:
         working-directory: ./terraform
         run: |
           terraform destroy -auto-approve \
-            -var="location=${{ github.event.inputs.location }}" \
+            -var="localisation=${{ github.event.inputs.localisation }}" \
             -var="nomRessource=${{ github.event.inputs.resource_group_name }}"
