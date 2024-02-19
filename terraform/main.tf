@@ -1,5 +1,4 @@
 resource "azurerm_resource_group" "rg_name" {
-  count    = 1
-  name     = var.nomRessource
+  name     = "${var.nomRessource}-$(uuid())"
   location = var.localisation
 }
