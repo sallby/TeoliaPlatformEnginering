@@ -27,6 +27,21 @@ jobs:
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v2
 
+      - name: Check Resource Existence
+        id: check_rg_existence
+        run: |
+          exists=$(az group exists --name "${{ github.event.inputs.nomRessource }}")
+          echo ::set-output name=exists::$exists
+
+      - name: Determine Count
+        id: determine_count
+        run: |
+          if [[ ${{ steps.check_rg_existence.outputs.exists }} == 'false' ]]; then
+            echo "::set-output name=count::1"
+          else
+            echo "::set-output name=count::0"
+          fi
+
       - name: Terraform Init
         working-directory: ./terraform
         run: terraform init
@@ -40,8 +55,10 @@ jobs:
         run: |
           terraform plan -out=tfplan \
             -var="localisation=${{ github.event.inputs.localisation }}" \
-            -var="nomRessource=${{ github.event.inputs.nomRessource }}"
+            -var="nomRessource=${{ github.event.inputs.nomRessource }}" \
+            -var="count=${{ steps.determine_count.outputs.count }}"
 
       - name: Deploy if approved
+        if: steps.check_rg_existence.outputs.exists == 'false'
         working-directory: ./terraform
         run: terraform apply -auto-approve tfplan
