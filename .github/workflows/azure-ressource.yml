@@ -31,16 +31,19 @@ jobs:
         working-directory: ./terraform
         run: terraform init
 
-      - name: Import existing resources
-        working-directory: ./terraform
-        run: |
-          terraform import azurerm_resource_group.rg_name /subscriptions/319819ff-ed9b-4c33-a3d3-d7833a1a5a54/resourceGroups/${{ github.event.inputs.nomRessource }}
-
       - name: Terraform Validate
         working-directory: ./terraform
         run: terraform validate
 
+      - name: Check if resource group already exists
+        working-directory: ./terraform
+        id: check_rg
+        run: |
+          existing_rg=$(az group show --name "${{ github.event.inputs.nomRessource }}" --subscription "${{ secrets.AZURE_SUBSCRIPTION_ID }}" --query 'name' -o tsv || echo "")
+          echo "::set-output name=exists::$(if [[ -n "$existing_rg" ]]; then echo "true"; else echo "false"; fi)"
+
       - name: Terraform Plan
+        if: steps.check_rg.outputs.exists == 'false' # Ne planifie que si le groupe de ressources n'existe pas déjà
         working-directory: ./terraform
         run: |
           terraform plan -out=tfplan \
@@ -48,6 +51,6 @@ jobs:
             -var="nomRessource=${{ github.event.inputs.nomRessource }}"
 
       - name: Deploy if approved
+        if: steps.check_rg.outputs.exists == 'false' # Ne déploie que si le groupe de ressources n'existe pas déjà
         working-directory: ./terraform
-        run: |
-          terraform apply -auto-approve tfplan
+        run: terraform apply -auto-approve tfplan
