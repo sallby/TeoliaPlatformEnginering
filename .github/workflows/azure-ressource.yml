@@ -31,6 +31,11 @@ jobs:
         working-directory: ./terraform
         run: terraform init
 
+      - name: Import existing resources
+        working-directory: ./terraform
+        run: |
+          terraform import azurerm_resource_group.existing_rg /subscriptions/319819ff-ed9b-4c33-a3d3-d7833a1a5a54/resourceGroups/${{ github.event.inputs.nomRessource }}
+
       - name: Terraform Validate
         working-directory: ./terraform
         run: terraform validate
@@ -44,4 +49,5 @@ jobs:
 
       - name: Deploy if approved
         working-directory: ./terraform
-        run: terraform apply -auto-approve tfplan
+        run: |
+          terraform apply -auto-approve tfplan

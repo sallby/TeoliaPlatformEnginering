@@ -122,22 +122,6 @@
                             id="monFormulaire">
                             <div class="row">
                                 <div class="form-group col-md-6">
-                                    <label for="name">Nom</label>
-                                    <input type="text" class="form-control" name="name" id="name" required
-                                        oninput="updateResourceGroupName()">
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label for="prenom">Prénom</label>
-                                    <input type="text" class="form-control" name="prenom" id="prenom" required>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="email">Email</label>
-                                <input type="email" class="form-control" name="email" id="email" required>
-                            </div>
-
-                            <div class="row">
-                                <div class="form-group col-md-6">
                                     <label for="name">Type de demande</label>
                                     <select id="type" name="type" class="form-control"
                                         title="Sélectionnez le type de demande" onchange="updateResourceGroupName()">
@@ -154,13 +138,26 @@
                                     </select>
                                 </div>
                             </div>
-
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <label for="name">Nom</label>
+                                    <input type="text" class="form-control" name="name" id="name" required
+                                        oninput="updateResourceGroupName()">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="prenom">Prénom</label>
+                                    <input type="text" class="form-control" name="prenom" id="prenom" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" class="form-control" name="email" id="email" required>
+                            </div>
                             <div class="form-group">
                                 <label for="nomRessource">Nom de la Ressource Group</label>
                                 <input type="text" class="form-control" id="nomRessource" name="nomRessource" readonly
                                     required>
                             </div>
-
                             <div class="text-center">
                                 <button type="submit">Envoyer</button>
                             </div>
@@ -178,6 +175,7 @@
                                 }
                             }
                             document.getElementById('prenom').addEventListener('input', updateResourceGroupName);
+                            document.getElementById('type').addEventListener('change', updateResourceGroupName);
                         </script>
 
                         <script>
