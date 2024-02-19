@@ -6,6 +6,6 @@ variable "nomRessource" {
   type = string
 }
 variable "count" {
-  type    = number
-  default = 1
+  description = "Number of resource groups to create"
+  default     = 1
 }
