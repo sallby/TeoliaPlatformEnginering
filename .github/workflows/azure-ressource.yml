@@ -21,35 +21,15 @@ jobs:
       ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
 
     steps:
-      - name: Login to Azure
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-
       - name: Checkout Github Repo
         uses: actions/checkout@v4
 
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v2
 
-      - name: Check Resource Existence
-        id: check_rg_existence
-        run: |
-          exists=$(az group exists --name "${{ github.event.inputs.nomRessource }}")
-          echo "::set-output name=exists::$exists"
-
-      - name: Determine Count
-        id: determine_count
-        run: |
-          if [[ ${{ steps.check_rg_existence.outputs.exists }} == 'false' ]]; then
-            echo "::set-output name=count::1"
-          else
-            echo "::set-output name=count::0"
-          fi
-
       - name: Terraform Init
-        working-directory: ./terraform
-        run: terraform init
+        working-directory: ./terraform 
+        run: terraform init -reconfigure
 
       - name: Terraform Validate
         working-directory: ./terraform
@@ -60,10 +40,8 @@ jobs:
         run: |
           terraform plan -out=tfplan \
             -var="localisation=${{ github.event.inputs.localisation }}" \
-            -var="nomRessource=${{ github.event.inputs.nomRessource }}" \
-            -var="count=${{ steps.determine_count.outputs.count }}"
+            -var="nomRessource=${{ github.event.inputs.nomRessource }}"
 
       - name: Deploy if approved
-        if: steps.check_rg_existence.outputs.exists == 'false'
         working-directory: ./terraform
         run: terraform apply -auto-approve tfplan
