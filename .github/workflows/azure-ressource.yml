@@ -27,8 +27,8 @@ jobs:
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v2
 
-      - name: Update backend config file
-        run: echo "key = '${{ github.event.inputs.nomRessource }}'" > ./terraform/backend-config.tfvars
+      - name: Create backend config file
+        run: echo "key = \"${{ github.event.inputs.nomRessource }}\"" > ./terraform/backend-config.tfvars
 
       - name: Terraform Init
         working-directory: ./terraform 
