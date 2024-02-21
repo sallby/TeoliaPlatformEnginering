@@ -3,11 +3,8 @@ name: Destroy resources Azure
 on:
   workflow_dispatch:
     inputs:
-      localisation:
-        description: 'Location for the Azure resources'
-        required: true
-      resource_group_name:
-        description: 'Name for the Azure resource group'
+      nomRessource:
+        description: 'Key of the tfstate file'
         required: true
 
 jobs:
@@ -29,11 +26,10 @@ jobs:
 
       - name: Terraform Init
         working-directory: ./terraform 
-        run: terraform init -reconfigure
+        run: terraform init -reconfigure \
+             -backend-config="key=${{ github.event.inputs.nomRessource }}"
 
       - name: Destroy if approved
         working-directory: ./terraform
         run: |
-          terraform destroy -auto-approve \
-            -var="localisation=${{ github.event.inputs.localisation }}" \
-            -var="nomRessource=${{ github.event.inputs.resource_group_name }}"
+          terraform destroy -auto-approve
