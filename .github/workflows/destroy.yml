@@ -4,7 +4,10 @@ on:
   workflow_dispatch:
     inputs:
       nomRessource:
-        description: 'Key of the tfstate file'
+        description: 'Nom de la ressource'
+        required: true
+      localisation:
+        description: 'Localisation de la ressource'
         required: true
 
 jobs:
@@ -32,4 +35,7 @@ jobs:
       - name: Destroy if approved
         working-directory: ./terraform
         run: |
-          terraform destroy -auto-approve
+          terraform destroy -auto-approve \
+          -var="localisation=${{ github.event.inputs.localisation }}" \
+          -var="nomRessource=${{ github.event.inputs.nomRessource }}" \
+          -var="key=${{ github.event.inputs.nomRessource }}"
