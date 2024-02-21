@@ -29,10 +29,8 @@ jobs:
 
       - name: Terraform Init
         working-directory: ./terraform 
-        run: terraform init -reconfigure \
-             -backend-config="key=${{ github.event.inputs.nomRessource }}"
+        run: terraform init -reconfigure -backend-config="key=${{ github.event.inputs.nomRessource }}"
       
-
       - name: Destroy if approved
         working-directory: ./terraform
         run: |
