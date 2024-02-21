@@ -5,3 +5,6 @@ variable "localisation" {
 variable "nomRessource" {
   type = string
 }
+variable "key" {
+  type = string
+}
