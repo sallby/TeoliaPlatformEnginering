@@ -43,7 +43,8 @@ jobs:
         run: |
           terraform plan -out=tfplan \
             -var="localisation=${{ github.event.inputs.localisation }}" \
-            -var="nomRessource=${{ github.event.inputs.nomRessource }}"
+            -var="nomRessource=${{ github.event.inputs.nomRessource }}" \
+            -var="key=${{ github.event.inputs.nomRessource }}"
 
       - name: Deploy if approved
         working-directory: ./terraform
