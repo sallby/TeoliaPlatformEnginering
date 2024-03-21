@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "@azure/functions": "^4.0.0",
+    "@azure/msal-node": "^2.6.4",
     "node-fetch": "^2.6.5"
   },
   "main": "src/functions/*.js"
