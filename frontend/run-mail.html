@@ -32,7 +32,7 @@
         // Effectuer la requête POST vers l'endpoint de l'API Azure Function
         const prenom = getUrlParameter('prenom');
         const email = getUrlParameter('email');
-        const url = `/api/sendmail?prenom=${encodeURIComponent(prenom)}&email=${encodeURIComponent(email)}`;
+        const url = `/api/sendmail3?prenom=${encodeURIComponent(prenom)}&email=${encodeURIComponent(email)}`;
         const body = {
             prenom: prenom,
             email: email
