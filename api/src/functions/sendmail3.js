@@ -24,7 +24,9 @@ async function sendmail3(req, context) {
         return;
     }
 
+    const lien = data.nomRessource ? `https://portal.azure.com/?quickstart=true#@teolia.fr/resource/subscriptions/319819ff-ed9b-4c33-a3d3-d7833a1a5a54/resourceGroups/${data.nomRessource}/overview` : '';
     const messageContent = `Bonjour ${data.prenom || ''}, Votre demande a été refusée. Veuillez nous contacter pour plus d'informations.`;
+    const messageContent2 = `Bonjour ${data.prenom || ''}, Votre demande est acceptée. Voici le lien vers le groupe de ressources :  ${lien}`;
     sgMail.setApiKey(process.env.SendGridApiKey);
 
     const msg = {
@@ -34,14 +36,25 @@ async function sendmail3(req, context) {
         html: messageContent
     };
 
+    const msg2 = {
+        to: data.email,
+        from: 'djiby-oumar.sall@teolia.fr',
+        subject: 'Demande acceptée',
+        html: messageContent2
+    };
+
     try {
-        await sgMail.send(msg);
+        if (data.nomRessource) {
+            await sgMail.send(msg2);
+        } else {
+            await sgMail.send(msg);
+        }
         context.res = {
             status: 200,
             body: "Email envoyé avec succès!"
         };
     } catch (error) {
-        console.error(error);
+        console.error("Erreur lors de l'envoi de l'email :", error);
         context.res = {
             status: 500,
             body: "Une erreur est survenue lors de l'envoi de l'email."

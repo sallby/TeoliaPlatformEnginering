@@ -30,11 +30,19 @@
         <p>Le déploiement est en cours d'initialisation et vous serez notifié lorsqu'il sera lancé.</p>
     </div>
     <script>
+        // Fonction pour extraire les paramètres d'une URL
+        function getUrlParameter(name) {
+            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+            var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+            var results = regex.exec(location.search);
+            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        };
+
         // Effectuer la requête POST vers l'endpoint de l'API Azure Function
         const localisation = getUrlParameter('localisation');
         const nomRessource = getUrlParameter('nomRessource');
         const url = `/api/deploy_ressource?localisation=${encodeURIComponent(localisation)}&nomRessource=${encodeURIComponent(nomRessource)}`;
-        const body = {
+        const body1 = {
             localisation: localisation,
             nomRessource: nomRessource
         };
@@ -43,26 +51,49 @@
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(body)
+            body: JSON.stringify(body1)
         })
+            .then(response => response.json())
             .then(data => {
                 console.log("Voir la reponse", data);
                 alert('Le déploiement est en cours.');
-                window.location.href = 'index.html';
+                // Effectuer la requête POST vers l'endpoint de l'API Azure Function sendmail
+                const prenom = getUrlParameter('prenom');
+                const email = getUrlParameter('email');
+                const url2 = `/api/sendmail3?prenom=${encodeURIComponent(prenom)}&email=${encodeURIComponent(email)}&nomRessource=${encodeURIComponent(nomRessource)}`;
+                const body2 = {
+                    prenom: prenom,
+                    email: email,
+                    nomRessource: nomRessource
+                };
+                fetch(url2, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(body2)
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Erreur lors de la requête.');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log("Voir la réponse", data);
+                        alert('Le mail a été envoyé avec succès.');
+                        window.location.href = 'index.html';
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        window.location.href = 'index.html';
+                    });
             })
             .catch(error => {
                 console.error('Error:', error);
                 alert('L\'action pepiline gitHub n\'est pas lancée, vous devez vous authentifier et cliquer à nouveau sur le bouton accepter.');
                 window.location.href = 'index.html';
             });
-
-        // Fonction pour extraire les paramètres d'une URL
-        function getUrlParameter(name) {
-            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
-            var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
-            var results = regex.exec(location.search);
-            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
-        };
     </script>
 </body>
 
