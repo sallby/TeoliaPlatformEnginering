@@ -39,7 +39,7 @@ resource "azurerm_resource_group_policy_assignment" "size_vm_policy" {
   parameters           = <<PARAMETERS
     {
         "listOfAllowedSKUs": {
-            "value": ["basic_a0","basic_a1","basic_a2","standard_a0","standard_a1","standard_a1_v2","standard_a2","standard_f1s","standard_f2","standard_f2s","standard_b1s","standard_b2s","standard_b2ms","standard_b1ls","standard_ds1_v2","standard_ds2_v2","standard_ds2_v2_promo"]
+            "value": ["basic_a0","basic_a1","basic_a2","standard_a0","standard_a1","standard_a1_v2","standard_a2","standard_f1s","standard_f2","standard_f2s","standard_b1s","standard_b2s","standard_b1ls","standard_ds1_v2","standard_ds2_v2","standard_ds2_v2_promo"]
         }
     }
   PARAMETERS
