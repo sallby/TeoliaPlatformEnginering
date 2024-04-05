@@ -795,6 +795,12 @@ section {
   /* #37517e; */
 }
 
+#table {
+  font-size: 14px;
+  background: #37517e;
+  /* #37517e; */
+}
+
 #footer .footer-newsletter {
   padding: 50px 0;
   background: #f3f5fa;
@@ -1456,4 +1462,9 @@ img.social-icon {
   object-fit: cover;
   margin-right: 3px;
   /* Espacement entre les icônes */
+}
+
+.btn-center {
+  display: block;
+  margin: 0 auto;
 }
