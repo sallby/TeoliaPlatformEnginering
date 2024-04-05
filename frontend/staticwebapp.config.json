@@ -13,6 +13,12 @@
             ]
         },
         {
+            "route": "/resourcegroup.html",
+            "allowedRoles": [
+                "authenticated"
+            ]
+        },
+        {
             "route": "/run-formulaire.html",
             "allowedRoles": [
                 "authenticated"
