@@ -108,6 +108,7 @@
                         <tr>
                             <th scope="col">Name</th>
                             <th scope="col">Location</th>
+                            <th scope="col">Cost</th>
                             <th scope="col">Action</th>
                         </tr>
                     </thead>
@@ -221,6 +222,7 @@
                 const tokenResponse = await axios.post('/api/getTokenFromAAD');
                 const token = tokenResponse.data.access_token;
 
+                // First API call to get resource groups
                 const response = await axios.get(apiEndpoint, {
                     headers: {
                         'Authorization': `Bearer ${token}`,
@@ -228,26 +230,70 @@
                 });
 
                 const resourceGroups = response.data.value;
-                const tableBody = document.getElementById("resourceGroupTableBody");
+                // Corps JSON à envoyer avec la requête POST
+                const requestBody = {
+                    "type": "ActualCost",
+                    "timeframe": "MonthToDate",
+                    "dataset": {
+                        "granularity": "None",
+                        "aggregation": {
+                            "totalCost": {
+                                "name": "Cost",
+                                "function": "Sum"
+                            }
+                        },
+                        "grouping": [
+                            {
+                                "type": "Dimension",
+                                "name": "ResourceGroupName"
+                            }
+                        ]
+                    }
+                };
+                // Effectuer la requête POST avec le corps JSON
+                const costResponse = await axios.post(
+                    `https://management.azure.com/subscriptions/319819ff-ed9b-4c33-a3d3-d7833a1a5a54/providers/Microsoft.CostManagement/query?api-version=2019-11-01`,
+                    requestBody,
+                    {
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json'
+                        }
+                    }
+                );
 
-                resourceGroups.forEach(group => {
+                const costData = costResponse.data.properties.rows;
+                // Update the table
+                // Update the table
+                const tableBody = document.getElementById("resourceGroupTableBody");
+                resourceGroups.forEach((group, index) => {
                     const row = document.createElement("tr");
                     const nameCell = document.createElement("td");
                     const locationCell = document.createElement("td");
+                    const costCell = document.createElement("td"); // New cost cell
                     const actionCell = document.createElement("td");
 
                     nameCell.textContent = group.name;
                     locationCell.textContent = group.location;
+
+                    // Fill cost cell with cost data
+                    const costValue = costData.find(cost => cost[1] === group.name);
+                    const formattedCost = costValue ? costValue[0].toFixed(6) + " " + costValue[2] : 'N/A'; // Format cost with two decimal places and currency symbol
+                    costCell.textContent = formattedCost;
+
                     actionCell.innerHTML = `<button type="button" class="btn btn-danger btn-center" onclick="deleteResourceGroup('${group.name}')">Supprimer</button>`;
                     row.appendChild(nameCell);
                     row.appendChild(locationCell);
+                    row.appendChild(costCell);
                     row.appendChild(actionCell);
                     tableBody.appendChild(row);
                 });
+
             } catch (error) {
                 console.error("Error fetching resource groups:", error);
             }
         }
+
         async function deleteResourceGroup(resourceName) {
             try {
                 // Find the table row associated with the clicked button
@@ -278,7 +324,7 @@
                 }
 
                 alert(`Le groupe de ressources "${resourceName}" est en cours de supprision patientez 4 minutes et actualisez la page.`);
-                // Actualisez la liste des groupes de ressources après la suppression
+                // Refresh the list of resource groups after deletion
                 getResourceGroups();
             } catch (error) {
                 console.error("Error deleting resource group:", error);
