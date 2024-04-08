@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Resource Groups</title>
+
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <!-- Favicons -->
+    <link href="assets/img/favicon.png" rel="icon">
+    <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Jost:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+        rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+    <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+    <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+    <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+    <!-- Template Main CSS File -->
+    <link href="assets/css/style.css" rel="stylesheet">
+
+    <!-- Inclure MSAL.js -->
+    <script src="https://alcdn.msauth.net/browser/2.16.0/js/msal-browser.js"></script>
+    <script>
+        async function getUserInfo() {
+            try {
+                const response = await fetch('/.auth/me');
+
+                if (!response.ok) {
+                    console.error('No profile could be found');
+                    return undefined;
+                }
+                const payload = await response.json();
+                const { clientPrincipal } = payload;
+                return clientPrincipal;
+            } catch (error) {
+                console.error('No profile could be found');
+                return undefined;
+            }
+        }
+
+        getUserInfo().then(userInfo => {
+            if (userInfo) {
+                const linkLogin = document.getElementById('link_login');
+                linkLogin.querySelector('a').classList.toggle("d-none");
+                linkLogin.textContent = userInfo.userDetails
+                const linkLogout = document.getElementById('link_logout');
+                linkLogout.classList.toggle("d-none");
+            } else {
+                console.error('No profile could be found');
+            }
+        });
+    </script>
+</head>
+
+<body>
+
+    <!-- ======= Header ======= -->
+    <header id="header" class="fixed-top header-inner-pages">
+        <div class="container d-flex align-items-center">
+
+            <h1 class="logo me-auto">
+                <a href="index.html">
+                    <img class="teolia-logo"
+                        src="https://static.wixstatic.com/media/d81a73_455a892fc9134f27a880bdd048714042~mv2.png/v1/fill/w_243,h_90,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/LogoTeolia2021%20(1).png"
+                        alt="Logo de Teolia">
+                </a>
+            </h1>
+
+            <nav id="navbar" class="navbar">
+                <ul>
+                    <li><a class="nav-link scrollto active" href="index.html">Accueil</a></li>
+                    <li><a class="nav-link scrollto" href="resourcegroup.html">Nos ResourceGroups</a></li>
+                    <li><a class="nav-link scrollto" href="#footer">Contact</a></li>
+                    <li class="nav-link scrollto" id="link_login"><a
+                            href="/.auth/login/aad?post_login_redirect_uri=/formulaire.html">Login</a></li>
+                    <li class="nav-link d-none scrollto" id="link_logout"><a
+                            href="/.auth/logout?post_logout_redirect_uri=/index.html">Log out</a></li>
+                </ul>
+                <i class="bi bi-list mobile-nav-toggle"></i>
+            </nav><!-- .navbar -->
+
+        </div>
+    </header><!-- End Header -->
+
+    <main id="main">
+
+        <!-- ======= Contact Section ======= -->
+        <section id="table" class="formulaire">
+            <div class="container"><br>
+                <h3 class="text-white">Liste des Resource Groups</h3>
+            </div>
+            <br>
+            <div class="container" data-aos="fade-up">
+                <table class="table table-hover table-bordered">
+                    <thead>
+                        <tr>
+                            <th scope="col">Name</th>
+                            <th scope="col">Location</th>
+                            <th scope="col">Cost</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="resourceGroupTableBody"></tbody>
+                </table>
+            </div>
+        </section><!-- End Contact Section -->
+
+    </main><!-- End #main -->
+
+    <!-- ======= Footer ======= -->
+    <footer id="footer">
+
+        <div class="footer-top">
+            <div class="container">
+                <div class="row">
+
+                    <div class="col-lg-3 col-md-6 footer-contact">
+                        <!-- Votre balise img mise à jour -->
+                        <h3>
+                            <a href="https://www.teolia.fr">
+                                <img class="teolia-logo"
+                                    src="https://static.wixstatic.com/media/d81a73_455a892fc9134f27a880bdd048714042~mv2.png/v1/fill/w_243,h_90,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/LogoTeolia2021%20(1).png"
+                                    alt="Teolia Logo">
+                            </a>
+                        </h3>
+
+                        <p>
+                            Ensemble, réinventons notre futur
+                        </p>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6 footer-links">
+                        <h4>RESTONS CONNECTES</h4>
+                        <ul>
+                            <li>
+                                <a href="https://www.linkedin.com/company/teolia/?originalSubdomain=fr">
+                                    <img class="social-icon" alt="LinkedIn"
+                                        src="https://static.wixstatic.com/media/d81a73_e75f9f91eddc47198b1688dc6952108f~mv2.png/v1/fill/w_63,h_63,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/d81a73_e75f9f91eddc47198b1688dc6952108f~mv2.png">
+                                </a>
+                                <a href="https://www.youtube.com/channel/UCz97BvUtQPlRs6x_-IY3VwQ" target="_blank"
+                                    rel="noreferrer noopener">
+                                    <img class="social-icon" alt="YouTube"
+                                        src="https://static.wixstatic.com/media/d81a73_252f1d570b724696929a396c298a68f0~mv2.png/v1/fill/w_63,h_63,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/d81a73_252f1d570b724696929a396c298a68f0~mv2.png">
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6 footer-links">
+                        <h4>CONTACT</h4>
+                        <ul>
+                            <li><i class="bx bx-chevron-right"></i> <a href="https://www.teolia.fr/contact-3">Nous
+                                    rejoindre</a></li>
+                            <li><i class="bx bx-chevron-right"></i> <a href="https://www.teolia.fr/contact-3">Nous
+                                    trouver</a></li>
+                            <li><i class="bx bx-chevron-right"></i> <a href="https://www.teolia.fr/contact-3">Nous
+                                    contacter</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6 footer-links">
+                        <h4>ENGAGEMENTS</h4>
+                        <ul>
+                            <li><i class="bx bx-chevron-right"></i> <a href="https://www.teolia.fr/about-6">Mentions
+                                    légales</a></li>
+                            <li><i class="bx bx-chevron-right"></i> <a
+                                    href="https://www.teolia.fr/copie-de-à-propos">Politique de
+                                    confidentialité</a></li>
+                            <li><i class="bx bx-chevron-right"></i> <a
+                                    href="https://www.teolia.fr/projects-3-1">Politique RSE</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="container footer-bottom clearfix">
+            <div class="copyright">
+                &copy; Copyright 2014-2024 <strong><span>- Teolia</span></strong> - Tous droits réservés
+            </div>
+        </div>
+    </footer><!-- End Footer -->
+
+    <div id="preloader"></div>
+    <a href="#" class="back-to-top d-flex align-items-center justify-content-center">
+        <i class="bi bi-arrow-up-short" aria-hidden="true"></i>
+        <span class="visually-hidden">Retour en haut</span>
+    </a>
+
+    <!-- Vendor JS Files -->
+    <script src="assets/vendor/aos/aos.js"></script>
+    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+    <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+    <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+    <script src="assets/vendor/waypoints/noframework.waypoints.js"></script>
+    <script src="assets/vendor/php-email-form/validate.js"></script>
+
+    <!-- Template Main JS File -->
+    <script src="assets/js/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        const subscriptionId = "319819ff-ed9b-4c33-a3d3-d7833a1a5a54";
+        const apiEndpoint = "https://management.azure.com/subscriptions/" + subscriptionId + "/resourcegroups?api-version=2021-04-01";
+
+        async function getResourceGroups() {
+            try {
+                const tokenResponse = await axios.post('/api/getTokenFromAAD');
+                const token = tokenResponse.data.access_token;
+
+                // First API call to get resource groups
+                const response = await axios.get(apiEndpoint, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                    },
+                });
+
+                const resourceGroups = response.data.value;
+                // Corps JSON à envoyer avec la requête POST
+                const requestBody = {
+                    "type": "ActualCost",
+                    "timeframe": "MonthToDate",
+                    "dataset": {
+                        "granularity": "None",
+                        "aggregation": {
+                            "totalCost": {
+                                "name": "Cost",
+                                "function": "Sum"
+                            }
+                        },
+                        "grouping": [
+                            {
+                                "type": "Dimension",
+                                "name": "ResourceGroupName"
+                            }
+                        ]
+                    }
+                };
+                // Effectuer la requête POST avec le corps JSON
+                const costResponse = await axios.post(
+                    `https://management.azure.com/subscriptions/319819ff-ed9b-4c33-a3d3-d7833a1a5a54/providers/Microsoft.CostManagement/query?api-version=2019-11-01`,
+                    requestBody,
+                    {
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json'
+                        }
+                    }
+                );
+
+                const costData = costResponse.data.properties.rows;
+                // Update the table
+                // Update the table
+                const tableBody = document.getElementById("resourceGroupTableBody");
+                resourceGroups.forEach((group, index) => {
+                    const row = document.createElement("tr");
+                    const nameCell = document.createElement("td");
+                    const locationCell = document.createElement("td");
+                    const costCell = document.createElement("td"); // New cost cell
+                    const actionCell = document.createElement("td");
+
+                    nameCell.textContent = group.name;
+                    locationCell.textContent = group.location;
+
+                    // Fill cost cell with cost data
+                    const costValue = costData.find(cost => cost[1] === group.name);
+                    const formattedCost = costValue ? costValue[0].toFixed(6) + " " + costValue[2] : 'N/A'; // Format cost with two decimal places and currency symbol
+                    costCell.textContent = formattedCost;
+
+                    actionCell.innerHTML = `<button type="button" class="btn btn-danger btn-center" onclick="deleteResourceGroup('${group.name}')">Supprimer</button>`;
+                    row.appendChild(nameCell);
+                    row.appendChild(locationCell);
+                    row.appendChild(costCell);
+                    row.appendChild(actionCell);
+                    tableBody.appendChild(row);
+                });
+
+            } catch (error) {
+                console.error("Error fetching resource groups:", error);
+            }
+        }
+
+        async function deleteResourceGroup(resourceName) {
+            try {
+                // Find the table row associated with the clicked button
+                const button = event.target;
+                const tableRow = button.parentNode.parentNode;
+
+                // Extract the location from the corresponding location cell
+                const locationCell = tableRow.cells[1];
+                const location = locationCell.textContent;
+
+                // Create the data object for the JSON body
+                const data = {
+                    localisation: location,
+                    nomRessource: resourceName,
+                };
+
+                const url = '/api/delete_ressource'; // Assuming your Azure function is at this endpoint
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data), // Send the data object as JSON body
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Erreur lors de la requête: ${response.status} ${response.statusText}`);
+                }
+
+                alert(`Le groupe de ressources "${resourceName}" est en cours de supprision patientez 4 minutes et actualisez la page.`);
+                // Refresh the list of resource groups after deletion
+                getResourceGroups();
+            } catch (error) {
+                console.error("Error deleting resource group:", error);
+            }
+        }
+
+        getResourceGroups();
+    </script>
+
+</body>
+
+</html>
