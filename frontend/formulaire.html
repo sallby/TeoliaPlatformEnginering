@@ -165,12 +165,22 @@
 
                         <script>
                             var lastName = "";
+                            function generateRandomSuffix(length) {
+                                const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+                                let result = '';
+                                for (let i = 0; i < length; i++) {
+                                    const randomIndex = Math.floor(Math.random() * characters.length);
+                                    result += characters.charAt(randomIndex);
+                                }
+                                return result;
+                            }
                             function updateResourceGroupName() {
                                 var type = document.getElementById('type').value;
                                 var name = document.getElementById('name').value.replace(/\s/g, '');
                                 var nomRessource = document.getElementById('nomRessource');
+                                var randomSuffix = generateRandomSuffix(4); // Appel de la fonction pour générer un préfixe aléatoire
                                 if (name !== lastName) {
-                                    nomRessource.value = 'rg-' + type + '-' + name;
+                                    nomRessource.value = 'rg-' + type + '-' + name + '-' + randomSuffix;
                                     lastName = name;
                                 }
                             }
