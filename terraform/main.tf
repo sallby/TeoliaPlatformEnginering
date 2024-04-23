@@ -13,9 +13,14 @@ data "azurerm_policy_definition" "location_policy" {
 data "azurerm_policy_definition" "size_vm_policy" {
   display_name = "Taille autorisée des machines virtuelles"
 }
+
+resource "random_string" "random_name" {
+  length  = 4
+  special = false
+}
 module "rg" {
   source       = "./modules/resource_group"
-  nomRessource = var.nomRessource
+  nomRessource = "${var.nomRessource}-${random_string.random_name.result}"
   localisation = var.localisation
 }
 
